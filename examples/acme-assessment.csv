@@ -1,0 +1,10 @@
+measure,status,owner,evidence,last_review
+risk_analysis,implemented,CISO,risk-register-2026.xlsx,2026-09-30
+incident_handling,partial,SOC lead,"IR plan v2, tabletop pending",2026-06-15
+business_continuity,implemented,,BCP-2025.pdf,2024-01-10
+supply_chain,not_started,Procurement,,
+secure_development,implemented,Head of Eng,,2026-08-01
+cryptography,yes,CISO,crypto-policy.pdf,2026-02-02
+hygiene_training,in_progress,HR,,2026-10-01
+mfa,implemented,IT Ops,"Entra CA policy export, 2026-10",2026-10-15
+backup_policy,implemented,IT Ops,policy.pdf,2026-10-01

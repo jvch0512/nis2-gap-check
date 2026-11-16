@@ -1,0 +1,11 @@
+measure,status,owner,evidence,last_review
+risk_analysis,implemented,CEO,register.pdf,2026-10-20
+incident_handling,implemented,CEO,plan.pdf,2026-10-20
+business_continuity,implemented,CEO,bcp.pdf,2026-10-20
+supply_chain,implemented,CEO,vendors.csv,2026-10-20
+secure_development,implemented,CEO,sdlc.pdf,2026-10-20
+effectiveness,implemented,CEO,audit.pdf,2026-10-20
+hygiene_training,implemented,CEO,training.csv,2026-10-20
+cryptography,implemented,CEO,crypto.pdf,2026-10-20
+hr_access,implemented,CEO,iam.pdf,2026-10-20
+mfa,implemented,CEO,ca.json,2026-10-20

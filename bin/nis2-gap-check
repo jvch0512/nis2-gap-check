@@ -1,0 +1,61 @@
+#!/usr/bin/env raku
+use v6;
+use lib $*PROGRAM.parent.parent.add('src').Str;
+use Nis2;
+
+sub usage() {
+    note "usage: nis2-gap-check PATH [--tsv] [--fail-on medium|high|critical] [--today YYYY-MM-DD]\nExit: 0 ok, 1 findings at or above --fail-on, 2 bad input.";
+    exit 2;
+}
+
+my $path; my $tsv = False; my $fail-on; my $today = Date.today;
+my @a = @*ARGS;
+while @a {
+    my $x = @a.shift;
+    if $x eq '--tsv' { $tsv = True }
+    elsif $x eq '--fail-on' {
+        usage() unless @a;
+        $fail-on = @a.shift;
+        usage() unless $fail-on eq any(<medium high critical>);
+    }
+    elsif $x eq '--today' {
+        usage() unless @a;
+        $today = (try Date.new(@a.shift)) // usage();
+    }
+    elsif $x.starts-with('-') { usage() }
+    elsif $path.defined { usage() }
+    else { $path = $x }
+}
+usage() unless $path.defined;
+unless $path.IO.e {
+    note "error: no such file or directory: $path";
+    exit 2;
+}
+my @files;
+if $path.IO.d {
+    my $base = $path.subst(/'/'+$/, '');
+    for dir($base).sort(*.basename) -> $p {
+        @files.push(($p.basename, $p)) if $p.f && $p.basename.ends-with('.csv');
+    }
+} else {
+    @files.push(($path.IO.basename, $path.IO));
+}
+my @all;
+for @files -> ($label, $p) {
+    next if $p.s > 20_000_000;
+    my $text = $p.slurp(:enc<utf8-c8>).Str;
+    @all.append(|audit-text($text, $label, $today));
+}
+my @sorted = sort-findings(@all);
+my $head = "{@files.elems} files, {@sorted.elems} findings";
+say $tsv ?? "# $head" !! $head;
+for @sorted -> %f {
+    if $tsv { say join("\t", %f<sev>, %f<rule>, %f<where>, %f<msg>) }
+    else { say sprintf("%-8s %s %s", %f<sev>.uc, %f<rule>, %f<where>); say "         " ~ %f<msg> }
+}
+if $fail-on {
+    my %r = critical => 0, high => 1, medium => 2, low => 3, info => 4;
+    my $floor = %r{$fail-on};
+    exit 1 if @sorted.first({ %r{.<sev>} <= $floor });
+}
+exit 0;

@@ -1,0 +1,10 @@
+# 2 files, 9 findings
+high	NIS001	acme-assessment.csv	effectiveness (assessing the effectiveness of measures) has no row in the assessment
+high	NIS001	acme-assessment.csv	hr_access (HR security, access control and asset management) has no row in the assessment
+high	NIS002	acme-assessment.csv:5	supply_chain (supply chain security) is not implemented
+medium	NIS003	acme-assessment.csv:3	incident_handling (incident handling) is only partly implemented
+medium	NIS004	acme-assessment.csv:6	secure_development is marked implemented with no evidence
+medium	NIS003	acme-assessment.csv:8	hygiene_training (cyber hygiene and training) is only partly implemented
+medium	NIS007	acme-assessment.csv:10	unknown measure 'backup_policy': use one of the ten Article 21 keys
+low	NIS005	acme-assessment.csv:4	business_continuity has no owner
+low	NIS006	acme-assessment.csv:4	business_continuity was last reviewed on 2024-01-10, more than 12 months ago
