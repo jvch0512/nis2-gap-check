@@ -1,6 +1,10 @@
 # nis2-gap-check
 
+[Español](README.es.md)
+
 nis2-gap-check reads a CSV self-assessment with one row per control (`measure,status,owner,evidence,last_review`) and compares it with the ten minimum measures of NIS2 Article 21(2): risk analysis, incident handling, business continuity, supply chain, secure acquisition and development, effectiveness assessment, cyber hygiene and training, cryptography, HR and access control, and multi-factor authentication. It reports measures that are missing, not implemented, without an owner, without evidence or not reviewed in the last 12 months.
+
+![Terminal demo of nis2-gap-check on its sample data](docs/demo.svg)
 
 **Live demo:** https://jvch0512.github.io/nis2-gap-check/ (Synthetic data.)
 
@@ -49,3 +53,13 @@ make test    # A Raku test script: every rule on good and bad rows, CSV quoting,
 ```
 
 MIT.
+
+## Code scanning (SARIF)
+
+`scripts/tsv2sarif.py` converts the `--tsv` output into SARIF 2.1.0, so findings show up in GitHub code scanning:
+
+```sh
+bin/nis2-gap-check examples --today 2026-11-16 --tsv | python3 scripts/tsv2sarif.py --tool nis2-gap-check --prefix examples > results.sarif
+```
+
+Upload `results.sarif` with `github/codeql-action/upload-sarif`. Severities map to SARIF levels (critical and high to error, medium to warning, low and info to note) and to a `security-severity` score.
